@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/epub.js/0.3.88/epub.min.js"></script>
+    <style>
+        body { margin: 0; padding: 0; background-color: #FAF6EE; }
+        #viewer { width: 100vw; height: 100vh; }
+    </style>
+</head>
+<body>
+    <div id="viewer"></div>
+    <script>
+        let book, rendition;
+        function openEpub(path) {
+            book = ePub("file://" + path);
+            rendition = book.renderTo("viewer", { width: "100%", height: "100%", spread: "none" });
+            rendition.display();
+            
+            // 화면 좌/우 터치 시 페이지 이동 구현
+            document.getElementById('viewer').addEventListener('click', function(e) {
+                if (e.clientX < window.innerWidth / 3) rendition.prev();
+                else if (e.clientX > window.innerWidth * 2 / 3) rendition.next();
+            });
+        }
+        function updateStyle(fs, lh) {
+            rendition.themes.default({
+                "body": { "font-size": fs + "px !important", "line-height": lh + " !important" },
+                "img": { "max-width": "100% !important", "height": "auto !important" }
+            });
+        }
+    </script>
+</body>
+</html>
